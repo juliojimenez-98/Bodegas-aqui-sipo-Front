@@ -4,7 +4,7 @@ import ErrorModal from "./ErrorModal";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    correo: "",
     password: "",
   });
   const [errorRes, setErrorRes] = useState(undefined);
@@ -20,7 +20,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("http://localhost:3001/login", {
+    fetch(`http://localhost:8080/api/auth/login`, {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {
@@ -30,14 +30,14 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.ok === true) {
+        if (data) {
           console.log(data);
           sessionStorage.setItem("token", data.token);
           // window.location.href = "/";
         }
-        if (data.ok === false) {
-          console.log(data);
-          setErrorRes(data.err.message);
+        if (data.msg) {
+          console.log(data.msg);
+          setErrorRes(data.msg);
 
           setShowModal(true);
         }
@@ -80,7 +80,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                name="email"
+                name="correo"
                 onChange={handleChange}
                 placeholder="tucorreo@email.com"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
