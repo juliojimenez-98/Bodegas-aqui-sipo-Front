@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
 import Usuarios from "../../DashboardComponents/Usuarios";
-import TopBarDashboard from "./TopBarDashboard";
 
 const Sidebar = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
@@ -151,13 +150,13 @@ const Sidebar = () => {
                       }
                     >
                       <a
-                        href="#"
+                        href="#a"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-white"
                       >
                         Profile
                       </a>
                       <a
-                        href="#"
+                        href="#a"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-black"
                       >
                         Tickets
@@ -176,16 +175,14 @@ const Sidebar = () => {
                 </div>
               </header>
 
-              <main class="flex-1 overflow-x-hidden overflow-y-auto">
+              <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                 <div class="container mx-auto px-6 py-8">
-                  <div class="grid place-items-center h-96 text-gray-500 dark:text-gray-300 text-xl">
-                    <Switch>
-                      <Route path="/dashboard" component={Dashboard} />
-                      <Route path="/usuarios" component={Usuarios} />
-                      <Route path="/bodegas" component={Bodegas} />
-                      <Redirect to="/dashboard" />
-                    </Switch>
-                  </div>
+                  <Switch>
+                    <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/usuarios" component={Usuarios} />
+                    <Route path="/bodegas" component={Bodegas} />
+                    <Redirect to="/dashboard" />
+                  </Switch>
                 </div>
               </main>
             </div>
