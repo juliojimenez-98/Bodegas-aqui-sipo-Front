@@ -11,7 +11,7 @@ const TopBarDashboard = () => {
             className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase text-white"
             href="#pablo"
           >
-            Front API REST
+            Bodegas Aqui Sipo
           </a>
 
           <button

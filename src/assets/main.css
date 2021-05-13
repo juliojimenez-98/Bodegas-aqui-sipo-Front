@@ -29818,6 +29818,10 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.bg-color-primary {
+  background-color: #172b4d;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

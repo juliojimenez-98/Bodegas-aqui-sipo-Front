@@ -7,6 +7,7 @@ const Login = () => {
     correo: "",
     password: "",
   });
+
   const [errorRes, setErrorRes] = useState(undefined);
   const [showModal, setShowModal] = React.useState(false);
 
@@ -18,9 +19,9 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch(`http://localhost:8080/api/auth/login`, {
+    await fetch(`http://localhost:8080/api/auth/login`, {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {
@@ -31,9 +32,12 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          console.log(data);
+          console.log(data.usuario);
           sessionStorage.setItem("token", data.token);
-          // window.location.href = "/";
+          sessionStorage.setItem("datosUsuario", JSON.stringify(data.usuario));
+          window.location.href = "/dashboard";
+          // var guardado = sessionStorage.getItem("datosUsuario");
+          // console.log(JSON.parse(guardado));
         }
         if (data.msg) {
           console.log(data.msg);
@@ -72,7 +76,7 @@ const Login = () => {
         </div>
 
         <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-          <p className="text-center text-3xl">Bienvenido</p>
+          <p className="text-center text-3xl">Bodegas Aqui Sipo</p>
           <form className="flex flex-col pt-3 md:pt-8" onSubmit={handleSubmit}>
             <div className="flex flex-col pt-4">
               <label htmlFor="email" className="text-lg">

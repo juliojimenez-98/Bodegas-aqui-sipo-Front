@@ -1,174 +1,195 @@
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
+import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
+import Usuarios from "../../DashboardComponents/Usuarios";
 import TopBarDashboard from "./TopBarDashboard";
 
 const Sidebar = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
 
   return (
     <>
-      <TopBarDashboard />
-      <div className="flex">
-        <div className="flex w-min">
-          <div
-            class={
-              "w-64 h-screen bg-gray-800 sm:mt-0" +
-              (toggleSidebar ? " " : " hidden")
-            }
-          >
-            <nav class="mt-10">
-              <Link to="/dashboard">
-                <p class=" cursor-pointer flex items-center mt-5 py-2 px-8 text-white border-r-4 border-gray-800 hover:bg-gray-500 hover:text-gray-100 hover:border-gray-100">
+      <div>
+        <div>
+          <div class="flex h-screen dark:bg-gray-800 font-roboto">
+            <div
+              class={
+                (toggleSidebar ? " " : " hidden") +
+                " fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden"
+              }
+            ></div>
+
+            <div
+              class={
+                (toggleSidebar ? " " : " hidden") +
+                " fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform bg-color-primary  dark:bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0"
+              }
+            >
+              <div class="flex items-center justify-center mt-8">
+                <div class="flex items-center">
+                  <span class="text-white  font-semibold">
+                    Admin Bodegas Aqui Sipo
+                  </span>
+                </div>
+              </div>
+
+              <ul class="flex flex-col mt-10 px-4 text-center">
+                <button
+                  onClick={() =>
+                    toggleSidebar
+                      ? setToggleSidebar(false)
+                      : setToggleSidebar(true)
+                  }
+                  class="w-10 h-10 bg-gray-800 rounded-lg top-0 right-0 lg:hidden  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+                >
                   <svg
-                    class="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="text-white"
                   >
                     <path
-                      d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
                     />
                   </svg>
-
-                  <span class="mx-4 font-medium">Dashboard</span>
-                </p>
-              </Link>
-
-              <Link to="/usuarios">
-                <p class=" cursor-pointer flex items-center mt-5 py-2 px-8 text-white border-r-4 border-gray-800 hover:bg-gray-500 hover:text-gray-100 hover:border-gray-100">
-                  <svg
-                    class="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                </button>
+                <Link to="/dashboard">
+                  <li
+                    href="#a"
+                    className="py-2 text-sm text-gray-100 text-xl  hover:bg-gray-200 hover:text-gray-700 rounded"
                   >
-                    <path
-                      d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                    Dashboard
+                  </li>
+                </Link>
+                <Link to="/usuarios">
+                  <li
+                    href="#a"
+                    className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700  hover:bg-gray-200  rounded"
+                  >
+                    Usuarios
+                  </li>
+                </Link>
+                <Link to="/bodegas">
+                  <li
+                    href="#a"
+                    className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700 dark:hover:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-800 rounded"
+                  >
+                    Bodegas
+                  </li>
+                </Link>
+              </ul>
+            </div>
 
-                  <span class="mx-4 font-medium">Usuarios</span>
-                </p>
-              </Link>
+            <div class="flex-1 flex flex-col overflow-hidden">
+              <header class="flex justify-between items-center p-6">
+                <div class="flex items-center space-x-4 lg:space-x-0">
+                  <div>
+                    <button
+                      onClick={() =>
+                        toggleSidebar
+                          ? setToggleSidebar(false)
+                          : setToggleSidebar(true)
+                      }
+                      class="p-0 m-2 w-10 h-10 bg-gray-800 rounded-lg  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="text-white"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
 
-              <a
-                class="flex items-center mt-5 py-2 px-8 text-white  border-r-4 border-gray-800 hover:bg-gray-500 hover:text-gray-100 hover:border-gray-100"
-                href="#a"
-              >
-                <svg
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15 5V7M15 11V13M15 17V19M5 5C3.89543 5 3 5.89543 3 7V10C4.10457 10 5 10.8954 5 12C5 13.1046 4.10457 14 3 14V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V14C19.8954 14 19 13.1046 19 12C19 10.8954 19.8954 10 21 10V7C21 5.89543 20.1046 5 19 5H5Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <div class="flex items-center space-x-4">
+                  <div class="relative">
+                    <button
+                      onClick={() => {
+                        dropdown ? setDropdown(false) : setDropdown(true);
+                      }}
+                      class="flex items-center space-x-2 relative focus:outline-none"
+                    >
+                      <h2 class="text-gray-700 dark:text-gray-300 text-lg hidden sm:block">
+                        Jones Ferdinand
+                      </h2>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    </button>
 
-                <span class="mx-4 font-medium">Tickets</span>
-              </a>
+                    <div
+                      class={
+                        (!dropdown ? "hidden" : " ") +
+                        " absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
+                      }
+                    >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-white"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-black"
+                      >
+                        Tickets
+                      </a>
+                      <a
+                        onClick={() => {
+                          sessionStorage.clear();
+                        }}
+                        href="/login"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-white"
+                      >
+                        Logout
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </header>
 
-              <a
-                class="flex items-center mt-5 py-2 px-8 text-white border-r-4 border-gray-800 hover:bg-gray-500 hover:text-gray-100 hover:border-gray-100"
-                href="#a"
-              >
-                <svg
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10.3246 4.31731C10.751 2.5609 13.249 2.5609 13.6754 4.31731C13.9508 5.45193 15.2507 5.99038 16.2478 5.38285C17.7913 4.44239 19.5576 6.2087 18.6172 7.75218C18.0096 8.74925 18.5481 10.0492 19.6827 10.3246C21.4391 10.751 21.4391 13.249 19.6827 13.6754C18.5481 13.9508 18.0096 15.2507 18.6172 16.2478C19.5576 17.7913 17.7913 19.5576 16.2478 18.6172C15.2507 18.0096 13.9508 18.5481 13.6754 19.6827C13.249 21.4391 10.751 21.4391 10.3246 19.6827C10.0492 18.5481 8.74926 18.0096 7.75219 18.6172C6.2087 19.5576 4.44239 17.7913 5.38285 16.2478C5.99038 15.2507 5.45193 13.9508 4.31731 13.6754C2.5609 13.249 2.5609 10.751 4.31731 10.3246C5.45193 10.0492 5.99037 8.74926 5.38285 7.75218C4.44239 6.2087 6.2087 4.44239 7.75219 5.38285C8.74926 5.99037 10.0492 5.45193 10.3246 4.31731Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-
-                <span class="mx-4 font-medium">Ajustes</span>
-              </a>
-            </nav>
-
-            <div class="absolute bottom-0 my-10">
-              <a
-                class="flex items-center py-2 px-8 text-gray-600 hover:text-gray-500"
-                href="#a"
-              >
-                <svg
-                  class="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM10 7C9.63113 7 9.3076 7.19922 9.13318 7.50073C8.85664 7.97879 8.24491 8.14215 7.76685 7.86561C7.28879 7.58906 7.12543 6.97733 7.40197 6.49927C7.91918 5.60518 8.88833 5 10 5C11.6569 5 13 6.34315 13 8C13 9.30622 12.1652 10.4175 11 10.8293V11C11 11.5523 10.5523 12 10 12C9.44773 12 9.00001 11.5523 9.00001 11V10C9.00001 9.44772 9.44773 9 10 9C10.5523 9 11 8.55228 11 8C11 7.44772 10.5523 7 10 7ZM10 15C10.5523 15 11 14.5523 11 14C11 13.4477 10.5523 13 10 13C9.44772 13 9 13.4477 9 14C9 14.5523 9.44772 15 10 15Z"
-                    fill="currentColor"
-                  />
-                </svg>
-
-                <span class="mx-4 font-medium">Support</span>
-              </a>
+              <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto px-6 py-8">
+                  <div class="grid place-items-center h-96 text-gray-500 dark:text-gray-300 text-xl">
+                    <Switch>
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/usuarios" component={Usuarios} />
+                      <Route path="/bodegas" component={Bodegas} />
+                      <Redirect to="/dashboard" />
+                    </Switch>
+                  </div>
+                </div>
+              </main>
             </div>
           </div>
-
-          <button
-            onClick={() => setToggleSidebar(!toggleSidebar)}
-            class="p-0 m-2 w-10 h-10 bg-gray-800 rounded-lg  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="text-white"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="w-full p-8">
-          <Switch>
-            <Route path="/dashboard" component={Dashboard} />
-            <Redirect to="/dashboard" />
-          </Switch>
         </div>
       </div>
     </>
