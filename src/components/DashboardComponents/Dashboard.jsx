@@ -1,6 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const [totalUsuarios, setTotalUsuarios] = useState([]);
+
+  const token = sessionStorage.getItem("token");
+  const headers = {
+    "x-token": token,
+  };
+  const obtenerTotalUsuarios = async () => {
+    await axios
+      .get("http://localhost:8080/api/usuarios", { headers })
+      .then((response) => {
+        setTotalUsuarios(response.data.total);
+        // setTotalUsuarios(response.data.total);
+      });
+  };
+  obtenerTotalUsuarios();
+
   return (
     <>
       <h3 class="text-gray-700 text-3xl font-medium">Dashboard</h3>
@@ -44,8 +61,10 @@ const Dashboard = () => {
               </div>
 
               <div class="mx-5">
-                <h4 class="text-2xl font-semibold text-gray-700">8,282</h4>
-                <div class="text-gray-500">New Users</div>
+                <h4 class="text-2xl font-semibold text-gray-700">
+                  {totalUsuarios ? totalUsuarios : <h1>Cargando...</h1>}
+                </h4>
+                <div class="text-gray-500">Total Usuarios</div>
               </div>
             </div>
           </div>

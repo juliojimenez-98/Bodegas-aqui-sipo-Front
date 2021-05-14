@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
+import RegistroUsuarios from "../../DashboardComponents/RegistroUsuarios";
 import Usuarios from "../../DashboardComponents/Usuarios";
 
 const Sidebar = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const [dropdown, setDropdown] = useState(false);
+  const [usuario, setUsuario] = useState({});
+
+  useEffect(() => {
+    const obtenerSessionStorage = async () => {
+      const datosUsuarios = sessionStorage.getItem("datosUsuario");
+      setUsuario(JSON.parse(datosUsuarios));
+    };
+    obtenerSessionStorage();
+    console.log(usuario);
+  }, []);
 
   return (
     <>
@@ -125,7 +136,7 @@ const Sidebar = () => {
                       class="flex items-center space-x-2 relative focus:outline-none"
                     >
                       <h2 class="text-gray-700 dark:text-gray-300 text-lg hidden sm:block">
-                        Jones Ferdinand
+                        {usuario.nombre}
                       </h2>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +192,7 @@ const Sidebar = () => {
                     <Route path="/dashboard" component={Dashboard} />
                     <Route path="/usuarios" component={Usuarios} />
                     <Route path="/bodegas" component={Bodegas} />
+                    <Route path="/addusuario" component={RegistroUsuarios} />
                     <Redirect to="/dashboard" />
                   </Switch>
                 </div>
