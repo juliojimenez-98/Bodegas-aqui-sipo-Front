@@ -1,7 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import ErrorModal from "../Login/ErrorModal";
-import axios from "axios";
 
 const RegistroUsuarios = () => {
   const [errorRes, setErrorRes] = React.useState([]);
@@ -11,7 +10,7 @@ const RegistroUsuarios = () => {
     <>
       <Formik
         initialValues={{ nombre: "", correo: "", password: "123456", role: "" }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values) => {
           fetch(`http://localhost:8080/api/usuarios`, {
             method: "POST",
             body: JSON.stringify(values),
