@@ -136,7 +136,7 @@ const Sidebar = () => {
                       class="flex items-center space-x-2 relative focus:outline-none"
                     >
                       <h2 class="text-gray-700 dark:text-gray-300 text-lg hidden sm:block">
-                        {usuario.nombre}
+                        {usuario? usuario.nombre: 'Usuario no autenticado'}
                       </h2>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

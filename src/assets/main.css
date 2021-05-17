@@ -29822,6 +29822,16 @@ video {
   background-color: #172b4d;
 }
 
+.swiper {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.swiper > img {
+  scroll-snap-align: start;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
