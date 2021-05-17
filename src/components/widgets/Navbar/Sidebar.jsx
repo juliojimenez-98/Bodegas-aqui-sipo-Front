@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
+import AgregarBodegas from "../../DashboardComponents/AgregarBodegas";
+import AgregarProductos from "../../DashboardComponents/AgregarProductos";
 import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
 import RegistroUsuarios from "../../DashboardComponents/RegistroUsuarios";
@@ -136,7 +138,7 @@ const Sidebar = () => {
                       class="flex items-center space-x-2 relative focus:outline-none"
                     >
                       <h2 class="text-gray-700 dark:text-gray-300 text-lg hidden sm:block">
-                        {usuario? usuario.nombre: 'Usuario no autenticado'}
+                        {usuario ? usuario.nombre : "Usuario no autenticado"}
                       </h2>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -193,6 +195,8 @@ const Sidebar = () => {
                     <Route path="/usuarios" component={Usuarios} />
                     <Route path="/bodegas" component={Bodegas} />
                     <Route path="/addusuario" component={RegistroUsuarios} />
+                    <Route path="/addbodega" component={AgregarBodegas} />
+                    <Route path="/addproducto" component={AgregarProductos} />
                     <Redirect to="/dashboard" />
                   </Switch>
                 </div>
