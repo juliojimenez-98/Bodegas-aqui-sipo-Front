@@ -1,9 +1,15 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import GlobalModal from "../widgets/GlobalModal";
+import ErrorModal from "../Login/ErrorModal";
 
 const AgregarBodegas = () => {
+  const [errorRes, setErrorRes] = React.useState([]);
   const [id, setId] = React.useState("");
+  const [showModal, setShowModal] = React.useState(false);
+  const [message, setMessage] = React.useState("Bodega agregada con exito");
+  const [showGlobalModal, setGlobalShowModal] = React.useState(false);
   const [formProductos, setFormProductos] = React.useState(false);
   const [productos, setProductos] = React.useState([]);
   const token = sessionStorage.getItem("token");
@@ -38,7 +44,6 @@ const AgregarBodegas = () => {
   }, []);
   return (
     <>
-      <button onClick={() => console.log(productos)}>as</button>
       <Formik
         initialValues={{
           nombre: "",
@@ -58,11 +63,18 @@ const AgregarBodegas = () => {
             .then((res) => res.json())
             .then((data) => {
               if (data) {
-                console.log(data);
+                const guardarMsg = async () => {
+                  setGlobalShowModal(true);
+                  setShowModal(false);
+                };
+                guardarMsg();
               }
+
               if (data.errors) {
                 const guardarMsgError = async () => {
-                  await console.log(data.errors[0].msg);
+                  await setErrorRes(data.errors[0].msg);
+                  setGlobalShowModal(false);
+                  setShowModal(true);
                 };
 
                 guardarMsgError();
@@ -121,13 +133,17 @@ const AgregarBodegas = () => {
                   (!formProductos ? "hidden " : " ") + "md:w-1/2 px-3 mt-2"
                 }
               >
-                <div role="group" aria-labelledby="checkbox-group">
+                <div
+                  className="flex flex-col"
+                  role="group"
+                  aria-labelledby="checkbox-group"
+                >
                   {productos.map(function (p) {
                     return (
                       <label>
                         <Field
                           type="checkbox"
-                          class="form-checkbox h-5 w-5 text-green-600"
+                          class="form-checkbox rounded-full h-5 w-5 text-green-600"
                           name="producto"
                           value={p._id}
                         />
@@ -151,6 +167,16 @@ const AgregarBodegas = () => {
           </div>
         )}
       </Formik>
+      {showModal ? (
+        <ErrorModal setShowModal={setShowModal} errorMessage={errorRes} />
+      ) : null}
+      {showGlobalModal ? (
+        <GlobalModal
+          setShowGlobalModal={setGlobalShowModal}
+          modalMessage={message}
+          redirectTo="/bodegas"
+        />
+      ) : null}
     </>
   );
 };

@@ -8,6 +8,7 @@ import Dashboard from "../../DashboardComponents/Dashboard";
 import Productos from "../../DashboardComponents/Productos";
 import RegistroUsuarios from "../../DashboardComponents/RegistroUsuarios";
 import Usuarios from "../../DashboardComponents/Usuarios";
+import Page404 from "../Page404";
 
 const Sidebar = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
@@ -49,30 +50,32 @@ const Sidebar = () => {
                 </div>
               </div>
 
-              <ul class="flex flex-col mt-10 px-4 text-center">
+              <div class="lg:hidden flex justify-end m-4">
                 <button
                   onClick={() =>
                     toggleSidebar
                       ? setToggleSidebar(false)
                       : setToggleSidebar(true)
                   }
-                  class="w-10 h-10 bg-gray-800 rounded-lg top-0 right-0 lg:hidden  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+                  class=" inline-block p-3 text-center text-white transition border border-gray-100 rounded-full shadow ripple hover:shadow-lg hover:bg-yellow-500  focus:outline-none"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-gray-100 hover:text-gray-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    className="text-white"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h16"
+                      d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
                 </button>
+              </div>
+              <ul class="flex flex-col mt-10 px-4 text-center">
                 <Link to="/dashboard">
                   <li
                     href="#a"
@@ -118,7 +121,7 @@ const Sidebar = () => {
                           ? setToggleSidebar(false)
                           : setToggleSidebar(true)
                       }
-                      class="p-0 m-2 w-10 h-10 bg-gray-800 rounded-lg  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+                      class="p-0 m-2 w-10 h-10 bg-color-primary rounded-lg  hover:bg-gray-600 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -199,16 +202,19 @@ const Sidebar = () => {
 
               <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                 <div class="container mx-auto px-6 py-8">
-                  <Switch>
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/usuarios" component={Usuarios} />
-                    <Route path="/bodegas" component={Bodegas} />
-                    <Route path="/addusuario" component={RegistroUsuarios} />
-                    <Route path="/addbodega" component={AgregarBodegas} />
-                    <Route path="/addproducto" component={AgregarProductos} />
-                    <Route path="/productos" component={Productos} />
-                    <Redirect to="/dashboard" />
-                  </Switch>
+                  {sessionStorage.getItem("token") ? (
+                    <Switch>
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/usuarios" component={Usuarios} />
+                      <Route path="/bodegas" component={Bodegas} />
+                      <Route path="/addusuario" component={RegistroUsuarios} />
+                      <Route path="/addbodega" component={AgregarBodegas} />
+                      <Route path="/addproducto" component={AgregarProductos} />
+                      <Route path="/productos" component={Productos} />
+                    </Switch>
+                  ) : (
+                    <Redirect to="/login" />
+                  )}
                 </div>
               </main>
             </div>

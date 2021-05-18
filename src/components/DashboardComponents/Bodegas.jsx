@@ -92,7 +92,6 @@ const Bodegas = () => {
                       <></>
                     )}
                     {bodega.producto.map(function (p) {
-                      console.log("pe", p);
                       return (
                         <>
                           <div class="flex justify-between px-2 py-2">
@@ -120,9 +119,9 @@ const Bodegas = () => {
                 <button
                   class={
                     (bodega.estado
-                      ? " bg-red-700 text-white"
+                      ? " bg-red-700 text-white "
                       : "bg-yellow-400 text-gray-700 ") +
-                    " rounded-full  hover:bg-gray-300 hover:text-gray-800 font-bold px-4 py-2"
+                    " rounded-full hover:bg-gray-300 hover:text-gray-800 font-bold px-4 py-2"
                   }
                 >
                   {bodega.estado ? "Bloquear" : "Desbloquear"}

@@ -1,9 +1,15 @@
 import { Field, Form, Formik } from "formik";
+import GlobalModal from "../widgets/GlobalModal";
 import React from "react";
+import ErrorModal from "../Login/ErrorModal";
 
 const AgregarProductos = () => {
   const [id, setId] = React.useState("");
   const token = sessionStorage.getItem("token");
+  const [showModal, setShowModal] = React.useState(false);
+  const [errorRes, setErrorRes] = React.useState([]);
+  const [message, setMessage] = React.useState("Producto agregado con exito");
+  const [showGlobalModal, setGlobalShowModal] = React.useState(false);
   const datos = sessionStorage.getItem("datosUsuario");
 
   React.useEffect(() => {
@@ -27,11 +33,18 @@ const AgregarProductos = () => {
             .then((res) => res.json())
             .then((data) => {
               if (data) {
-                console.log(data);
+                const guardarMsg = async () => {
+                  setGlobalShowModal(true);
+                  setShowModal(false);
+                };
+                guardarMsg();
               }
+
               if (data.errors) {
                 const guardarMsgError = async () => {
-                  await console.log(data.errors[0].msg);
+                  await setErrorRes(data.errors[0].msg);
+                  setGlobalShowModal(false);
+                  setShowModal(true);
                 };
 
                 guardarMsgError();
@@ -79,6 +92,16 @@ const AgregarProductos = () => {
           </div>
         )}
       </Formik>
+      {showModal ? (
+        <ErrorModal setShowModal={setShowModal} errorMessage={errorRes} />
+      ) : null}
+      {showGlobalModal ? (
+        <GlobalModal
+          setShowGlobalModal={setGlobalShowModal}
+          modalMessage={message}
+          redirectTo="/bodegas"
+        />
+      ) : null}
     </>
   );
 };
