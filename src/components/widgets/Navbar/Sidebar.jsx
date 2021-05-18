@@ -5,6 +5,7 @@ import AgregarBodegas from "../../DashboardComponents/AgregarBodegas";
 import AgregarProductos from "../../DashboardComponents/AgregarProductos";
 import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
+import Productos from "../../DashboardComponents/Productos";
 import RegistroUsuarios from "../../DashboardComponents/RegistroUsuarios";
 import Usuarios from "../../DashboardComponents/Usuarios";
 
@@ -94,6 +95,14 @@ const Sidebar = () => {
                     className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700 dark:hover:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-800 rounded"
                   >
                     Bodegas
+                  </li>
+                </Link>
+                <Link to="/productos">
+                  <li
+                    href="#a"
+                    className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700 dark:hover:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-800 rounded"
+                  >
+                    Productos
                   </li>
                 </Link>
               </ul>
@@ -197,6 +206,7 @@ const Sidebar = () => {
                     <Route path="/addusuario" component={RegistroUsuarios} />
                     <Route path="/addbodega" component={AgregarBodegas} />
                     <Route path="/addproducto" component={AgregarProductos} />
+                    <Route path="/productos" component={Productos} />
                     <Redirect to="/dashboard" />
                   </Switch>
                 </div>

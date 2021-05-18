@@ -61,7 +61,9 @@ const Bodegas = () => {
               <div class="flex flex-col flex-grow">
                 <div class="px-6 py-3 border-b">
                   <div class="text-xl font-bold text-white">
-                    {bodega.nombre}
+                    {bodega.nombre
+                      .trim()
+                      .replace(/^\w/, (c) => c.toUpperCase())}
                   </div>
                   <div
                     class={
@@ -79,7 +81,18 @@ const Bodegas = () => {
                     {bodega.descripcion}
                   </p>
                   <div class="py-5 ">
+                    <p class="text-pink-400 ml-2">
+                      Total productos en bodega: {bodega.producto.length}
+                    </p>
+                    {bodega.producto.length === 0 ? (
+                      <li class="text-yellow-300 ml-2">
+                        No hay productos en la bodega
+                      </li>
+                    ) : (
+                      <></>
+                    )}
                     {bodega.producto.map(function (p) {
+                      console.log("pe", p);
                       return (
                         <>
                           <div class="flex justify-between px-2 py-2">
@@ -106,8 +119,10 @@ const Bodegas = () => {
                 </button>
                 <button
                   class={
-                    (bodega.estado ? " bg-red-700 " : "bg-yellow-400 ") +
-                    " rounded-full text-white hover:bg-gray-300 hover:text-gray-800 font-bold px-4 py-2"
+                    (bodega.estado
+                      ? " bg-red-700 text-white"
+                      : "bg-yellow-400 text-gray-700 ") +
+                    " rounded-full  hover:bg-gray-300 hover:text-gray-800 font-bold px-4 py-2"
                   }
                 >
                   {bodega.estado ? "Bloquear" : "Desbloquear"}
