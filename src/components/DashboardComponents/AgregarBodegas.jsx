@@ -1,22 +1,49 @@
+import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 
 const AgregarBodegas = () => {
   const [id, setId] = React.useState("");
+  const [formProductos, setFormProductos] = React.useState(false);
+  const [productos, setProductos] = React.useState([]);
   const token = sessionStorage.getItem("token");
   const datos = sessionStorage.getItem("datosUsuario");
+
+  const obtenerProductos = async () => {
+    await axios
+      .get(`http://localhost:8080/api/productos`, {
+        headers,
+      })
+      .then(async (response) => {
+        setProductos(response.data.productos);
+        console.log(productos);
+      });
+  };
+  const headers = {
+    "x-token": token,
+  };
+
+  React.useEffect(() => {
+    obtenerProductos();
+  }, []);
+
+  React.useEffect(() => {
+    const datosGuardados = JSON.parse(datos);
+    setId(datosGuardados.uid);
+  }, []);
+
   React.useEffect(() => {
     const datosGuardados = JSON.parse(datos);
     setId(datosGuardados.uid);
   }, []);
   return (
     <>
+      <button onClick={() => console.log(productos)}>as</button>
       <Formik
         initialValues={{
           nombre: "",
           descripcion: "",
           productos: [],
-          usuario: id,
         }}
         onSubmit={(values) => {
           fetch(`http://localhost:8080/api/bodegas`, {
@@ -74,11 +101,52 @@ const AgregarBodegas = () => {
                 </div>
               </div>
               <button
-                type="submit"
-                class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"
+                type="button"
+                onClick={() =>
+                  formProductos
+                    ? setFormProductos(false)
+                    : setFormProductos(true)
+                }
+                class={
+                  !formProductos
+                    ? " border-2 border-green-500 rounded-full font-bold text-green-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-green-500 hover:text-white mr-6 focus:outline-none"
+                    : "border-2 bg-red-500 rounded-lg  font-bold text-gray-100 px-4 py-3 transition duration-300 ease-in-out hover:bg-red-500 hover:text-white mr-6 focus:outline-none"
+                }
               >
-                Agregar Bodega
+                {!formProductos ? "Agregar productos" : "X"}
               </button>
+
+              <div
+                class={
+                  (!formProductos ? "hidden " : " ") + "md:w-1/2 px-3 mt-2"
+                }
+              >
+                <div role="group" aria-labelledby="checkbox-group">
+                  {productos.map(function (p) {
+                    return (
+                      <label>
+                        <Field
+                          type="checkbox"
+                          class="form-checkbox h-5 w-5 text-green-600"
+                          name="producto"
+                          value={p._id}
+                        />
+                        {p.nombre}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="flex">
+                <div className="mx-auto">
+                  <button
+                    type="submit"
+                    class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"
+                  >
+                    Agregar Bodega
+                  </button>
+                </div>
+              </div>
             </Form>
           </div>
         )}
