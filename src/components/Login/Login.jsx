@@ -35,7 +35,9 @@ const Login = () => {
           console.log(data.usuario);
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("datosUsuario", JSON.stringify(data.usuario));
-          window.location.href = "/dashboard";
+          if (data.usuario) {
+            window.location.href = "/dashboard";
+          }
           // var guardado = sessionStorage.getItem("datosUsuario");
           // console.log(JSON.parse(guardado));
         }

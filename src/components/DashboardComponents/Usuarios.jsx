@@ -27,6 +27,19 @@ const Usuarios = () => {
     "x-token": token,
   };
 
+  const BloquearUsuarios = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/usuarios/${id}`, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          obtenerUsuarios(limite, desde);
+        }
+      });
+  };
+
   const nextPage = () => {
     setDesde(desde + limite);
   };
@@ -113,19 +126,28 @@ const Usuarios = () => {
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                      {user.role}
+                      {user.role === "ADMIN_ROLE"
+                        ? "ADMINISTRADOR"
+                        : "BODEGUERO"}
                     </td>
 
                     <td class="">
                       <button
-                        onClick={() => console.log(user.uid)}
+                        onClick={() => {
+                          console.log(user.uid);
+                        }}
                         class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-400 uppercase transition bg-transparent border-2 border-blue-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
                       >
                         Editar
                       </button>
                     </td>
                     <td class="">
-                      <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
+                      <button
+                        onClick={() => {
+                          BloquearUsuarios(user.uid);
+                        }}
+                        class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                      >
                         Bloquear
                       </button>
                     </td>

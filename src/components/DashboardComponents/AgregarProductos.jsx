@@ -99,7 +99,7 @@ const AgregarProductos = () => {
         <GlobalModal
           setShowGlobalModal={setGlobalShowModal}
           modalMessage={message}
-          redirectTo="/bodegas"
+          redirectTo="/productos"
         />
       ) : null}
     </>

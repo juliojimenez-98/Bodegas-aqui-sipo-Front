@@ -11,6 +11,7 @@ const AgregarBodegas = () => {
   const [message, setMessage] = React.useState("Bodega agregada con exito");
   const [showGlobalModal, setGlobalShowModal] = React.useState(false);
   const [formProductos, setFormProductos] = React.useState(false);
+  const [buttonTrue, setButtonTrue] = React.useState(false);
   const [productos, setProductos] = React.useState([]);
   const token = sessionStorage.getItem("token");
   const datos = sessionStorage.getItem("datosUsuario");
@@ -85,7 +86,7 @@ const AgregarBodegas = () => {
             });
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <Form>
               <div class="-mx-3 md:flex mb-6">
@@ -133,24 +134,102 @@ const AgregarBodegas = () => {
                   (!formProductos ? "hidden " : " ") + "md:w-1/2 px-3 mt-2"
                 }
               >
-                <div
-                  className="flex flex-col"
-                  role="group"
-                  aria-labelledby="checkbox-group"
-                >
-                  {productos.map(function (p) {
-                    return (
-                      <label>
-                        <Field
-                          type="checkbox"
-                          class="form-checkbox rounded-full h-5 w-5 text-green-600"
-                          name="producto"
-                          value={p._id}
-                        />
-                        {p.nombre}
-                      </label>
-                    );
-                  })}
+                <div class="min-h-screen flex-1 bg-gray-200 p-4 flex justify-center items-center">
+                  <div class="bg-white w-full md:max-w-4xl rounded-lg shadow">
+                    <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
+                      <div>
+                        <div class="text-xl font-bold text-gray-700">
+                          Productos
+                        </div>
+                        <div class="text-sm font-base text-gray-500">
+                          Agregar productos a bodega
+                        </div>
+                      </div>
+                    </div>
+                    <div class="px-6">
+                      {productos.map(function (p) {
+                        return (
+                          <div class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
+                            <div class="flex items-center">
+                              <div class="ml-2">
+                                <div class="text-sm font-semibold text-gray-600">
+                                  {p.nombre}
+                                </div>
+                                <div class="text-sm font-light text-gray-500">
+                                  {p.descripcion}
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              {values.productos.find((id) => p._id === id)
+                                ? console.log("estaid")
+                                : console.log("No esta id")}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  values.productos.push(p._id);
+                                  const find = values.productos.find(
+                                    (id) => id === p._id
+                                  );
+                                  if (find) {
+                                    setButtonTrue(true);
+                                  }
+
+                                  console.log(values.productos);
+                                }}
+                                class={
+                                  (buttonTrue
+                                    ? "hidden"
+                                    : "bg-green-600 hover:bg-green-500") +
+                                  " p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
+                                }
+                              >
+                                <svg
+                                  class="text-white toggle__lock w-6 h-6"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div class="flex bg-gray-200 justify-center items-center h-16 p-4 my-6  rounded-lg  shadow-inner">
+                        <div class="flex items-center border border-gray-400 p-2 border-dashed rounded cursor-pointer">
+                          <div>
+                            <svg
+                              class="text-gray-500 w-6 h-6"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                              />
+                            </svg>
+                          </div>
+                          <div class="ml-1 text-gray-500 font-medium">
+                            {" "}
+                            Invite a friend
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="p-6 "></div>
+                  </div>
                 </div>
               </div>
               <div className="flex">

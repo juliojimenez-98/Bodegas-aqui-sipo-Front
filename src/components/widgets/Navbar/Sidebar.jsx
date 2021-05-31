@@ -38,8 +38,11 @@ const Sidebar = () => {
 
             <div
               class={
-                (toggleSidebar ? " " : " hidden") +
-                " fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform bg-color-primary  dark:bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0"
+                (toggleSidebar ? " " : " hidden ") +
+                (usuario.role === "ADMIN_ROLE"
+                  ? "bg-color-primary"
+                  : "bg-red-800") +
+                " fixed z-30 inset-y-0 left-0 w-60 transition duration-300 transform   dark:bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0"
               }
             >
               <div class="flex items-center justify-center mt-8">
@@ -84,14 +87,17 @@ const Sidebar = () => {
                     Dashboard
                   </li>
                 </Link>
-                <Link to="/usuarios">
-                  <li
-                    href="#a"
-                    className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700  hover:bg-gray-200  rounded"
-                  >
-                    Usuarios
-                  </li>
-                </Link>
+                {usuario.role === "ADMIN_ROLE" ? (
+                  <Link to="/usuarios">
+                    <li
+                      href="#a"
+                      className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700  hover:bg-gray-200  rounded"
+                    >
+                      Usuarios
+                    </li>
+                  </Link>
+                ) : null}
+
                 <Link to="/bodegas">
                   <li
                     href="#a"
@@ -205,9 +211,23 @@ const Sidebar = () => {
                   {sessionStorage.getItem("token") ? (
                     <Switch>
                       <Route path="/dashboard" component={Dashboard} />
-                      <Route path="/usuarios" component={Usuarios} />
+                      {usuario.role === "ADMIN_ROLE" ? (
+                        <>
+                          <Route path="/usuarios" component={Usuarios} />
+                          <Route
+                            path="/addusuario"
+                            component={RegistroUsuarios}
+                          />
+                          <Route path="/bodegas" component={Bodegas} />
+                          <Route path="/addbodega" component={AgregarBodegas} />
+                          <Route
+                            path="/addproducto"
+                            component={AgregarProductos}
+                          />
+                          <Route path="/productos" component={Productos} />
+                        </>
+                      ) : null}
                       <Route path="/bodegas" component={Bodegas} />
-                      <Route path="/addusuario" component={RegistroUsuarios} />
                       <Route path="/addbodega" component={AgregarBodegas} />
                       <Route path="/addproducto" component={AgregarProductos} />
                       <Route path="/productos" component={Productos} />

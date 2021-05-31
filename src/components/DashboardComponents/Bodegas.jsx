@@ -7,6 +7,16 @@ const Bodegas = () => {
   const [total, setTotal] = useState();
   const [limite, setLimite] = useState(6);
   const [desde, setDesde] = useState(0);
+  const [usuario, setUsuario] = useState({});
+
+  useEffect(() => {
+    const obtenerSessionStorage = async () => {
+      const datosUsuarios = sessionStorage.getItem("datosUsuario");
+      setUsuario(JSON.parse(datosUsuarios));
+    };
+    obtenerSessionStorage();
+    console.log(usuario);
+  }, []);
 
   const token = sessionStorage.getItem("token");
   const msgNoProducts = "No tiene productos";
@@ -56,7 +66,14 @@ const Bodegas = () => {
       </Link>
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {bodegas.map((bodega) => (
-          <div class="max-w-md rounded-lg overflow-hidden shadow-lg bg-color-primary m-4">
+          <div
+            class={
+              (usuario.role === "ADMIN_ROLE"
+                ? "bg-color-primary "
+                : "bg-gray-600 ") +
+              "max-w-md rounded-lg overflow-hidden shadow-lg  m-4"
+            }
+          >
             <div class="flex flex-col min-h-full">
               <div class="flex flex-col flex-grow">
                 <div class="px-6 py-3 border-b">
