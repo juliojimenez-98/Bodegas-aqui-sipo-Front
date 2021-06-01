@@ -49,7 +49,7 @@ const AgregarBodegas = () => {
         initialValues={{
           nombre: "",
           descripcion: "",
-          productos: [],
+          producto: [],
         }}
         onSubmit={(values) => {
           fetch(`http://localhost:8080/api/bodegas`, {
@@ -63,10 +63,12 @@ const AgregarBodegas = () => {
           })
             .then((res) => res.json())
             .then((data) => {
+              console.log(values.producto);
               if (data) {
                 const guardarMsg = async () => {
                   setGlobalShowModal(true);
                   setShowModal(false);
+                  console.log(data);
                 };
                 guardarMsg();
               }
@@ -129,60 +131,41 @@ const AgregarBodegas = () => {
                 {!formProductos ? "Agregar productos" : "X"}
               </button>
 
-              <div
-                class={
-                  (!formProductos ? "hidden " : " ") + "md:w-1/2 px-3 mt-2"
-                }
-              >
-                <div class="min-h-screen flex-1 bg-gray-200 p-4 flex justify-center items-center">
-                  <div class="bg-white w-full md:max-w-4xl rounded-lg shadow">
-                    <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
-                      <div>
-                        <div class="text-xl font-bold text-gray-700">
-                          Productos
-                        </div>
-                        <div class="text-sm font-base text-gray-500">
-                          Agregar productos a bodega
-                        </div>
+              <div class={(!formProductos ? "hidden " : " ") + " px-3 mt-2"}>
+                <div class="bg-white w-full md:max-w-4xl rounded-lg shadow">
+                  <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
+                    <div>
+                      <div class="text-xl font-bold text-gray-700">
+                        Productos
+                      </div>
+                      <div class="text-sm font-base text-gray-500">
+                        Agregar productos a bodega
                       </div>
                     </div>
-                    <div class="px-6">
-                      {productos.map(function (p) {
-                        return (
-                          <div class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
-                            <div class="flex items-center">
-                              <div class="ml-2">
-                                <div class="text-sm font-semibold text-gray-600">
-                                  {p.nombre}
-                                </div>
-                                <div class="text-sm font-light text-gray-500">
-                                  {p.descripcion}
-                                </div>
+                  </div>
+                  <div class="px-6">
+                    {productos.map(function (p) {
+                      return (
+                        <div class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
+                          <div class="flex items-center">
+                            <div class="ml-2">
+                              <div class="text-sm font-semibold text-gray-600">
+                                {p.nombre}
+                              </div>
+                              <div class="text-sm font-light text-gray-500">
+                                {p.descripcion}
                               </div>
                             </div>
+                          </div>
+                          {values.producto.find((e) => e === p._id) ===
+                          p._id ? (
                             <div>
-                              {values.productos.find((id) => p._id === id)
-                                ? console.log("estaid")
-                                : console.log("No esta id")}
                               <button
                                 type="button"
                                 onClick={() => {
-                                  values.productos.push(p._id);
-                                  const find = values.productos.find(
-                                    (id) => id === p._id
-                                  );
-                                  if (find) {
-                                    setButtonTrue(true);
-                                  }
-
-                                  console.log(values.productos);
+                                  console.log("Ya esta producto");
                                 }}
-                                class={
-                                  (buttonTrue
-                                    ? "hidden"
-                                    : "bg-green-600 hover:bg-green-500") +
-                                  " p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
-                                }
+                                class="bg-red-600 hover:bg-red-500 p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
                               >
                                 <svg
                                   class="text-white toggle__lock w-6 h-6"
@@ -200,36 +183,74 @@ const AgregarBodegas = () => {
                                 </svg>
                               </button>
                             </div>
-                          </div>
-                        );
-                      })}
-                      <div class="flex bg-gray-200 justify-center items-center h-16 p-4 my-6  rounded-lg  shadow-inner">
-                        <div class="flex items-center border border-gray-400 p-2 border-dashed rounded cursor-pointer">
-                          <div>
-                            <svg
-                              class="text-gray-500 w-6 h-6"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                              />
-                            </svg>
-                          </div>
-                          <div class="ml-1 text-gray-500 font-medium">
-                            {" "}
-                            Invite a friend
-                          </div>
+                          ) : (
+                            <div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const found = values.producto.find(
+                                    (element) => element === p._id
+                                  );
+                                  if (found) {
+                                    console.log("Ya esta agregado");
+                                  } else {
+                                    values.producto.push(p._id);
+                                    setFormProductos(false);
+                                    setTimeout(() => {
+                                      setFormProductos(true);
+                                    }, 10);
+                                  }
+
+                                  console.log(values.producto);
+                                }}
+                                class="bg-green-600 hover:bg-green-500 p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
+                              >
+                                <svg
+                                  class="text-white toggle__lock w-6 h-6"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                    <div class="flex bg-gray-200 justify-center items-center h-16 p-4 my-6  rounded-lg  shadow-inner">
+                      <div class="flex items-center border border-gray-400 p-2 border-dashed rounded cursor-pointer">
+                        <div>
+                          <svg
+                            class="text-gray-500 w-6 h-6"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
+                          </svg>
+                        </div>
+                        <div class="ml-1 text-gray-500 font-medium">
+                          {" "}
+                          Invite a friend
                         </div>
                       </div>
                     </div>
-                    <div class="p-6 "></div>
                   </div>
+                  <div class="p-6 "></div>
                 </div>
               </div>
               <div className="flex">
