@@ -5,6 +5,7 @@ import AgregarBodegas from "../../DashboardComponents/AgregarBodegas";
 import AgregarProductos from "../../DashboardComponents/AgregarProductos";
 import Bodegas from "../../DashboardComponents/Bodegas";
 import Dashboard from "../../DashboardComponents/Dashboard";
+import Movimientos from "../../DashboardComponents/Movimientos";
 import Productos from "../../DashboardComponents/Productos";
 import RegistroUsuarios from "../../DashboardComponents/RegistroUsuarios";
 import Usuarios from "../../DashboardComponents/Usuarios";
@@ -114,6 +115,16 @@ const Sidebar = () => {
                     Productos
                   </li>
                 </Link>
+                {usuario.role === "ADMIN_ROLE" ? (
+                  <Link to="/movimientos">
+                    <li
+                      href="#a"
+                      className="mt-3 py-2 text-sm text-gray-100 text-xl  hover:text-gray-700  hover:bg-gray-200  rounded"
+                    >
+                      Movimientos
+                    </li>
+                  </Link>
+                ) : null}
               </ul>
             </div>
 
@@ -225,6 +236,7 @@ const Sidebar = () => {
                             component={AgregarProductos}
                           />
                           <Route path="/productos" component={Productos} />
+                          <Route path="/movimientos" component={Movimientos} />
                         </>
                       ) : null}
                       <Route path="/bodegas" component={Bodegas} />
