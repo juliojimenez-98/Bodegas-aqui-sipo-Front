@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
+import ActualizarProductos from "../../DashboardComponents/ActualizarProducto";
 import AgregarBodegas from "../../DashboardComponents/AgregarBodegas";
 import AgregarProductos from "../../DashboardComponents/AgregarProductos";
 import Bodegas from "../../DashboardComponents/Bodegas";
@@ -235,6 +236,11 @@ const Sidebar = () => {
                             path="/addproducto"
                             component={AgregarProductos}
                           />
+                          <Route
+                            exact
+                            path="/updateproductos/:idProducto"
+                            component={AgregarProductos}
+                          />
                           <Route path="/productos" component={Productos} />
                           <Route path="/movimientos" component={Movimientos} />
                         </>
@@ -242,6 +248,11 @@ const Sidebar = () => {
                       <Route path="/bodegas" component={Bodegas} />
                       <Route path="/addbodega" component={AgregarBodegas} />
                       <Route path="/addproducto" component={AgregarProductos} />
+                      <Route
+                        path="/updateproductos/:idProducto"
+                        exact
+                        component={AgregarProductos}
+                      />
                       <Route path="/productos" component={Productos} />
                     </Switch>
                   ) : (

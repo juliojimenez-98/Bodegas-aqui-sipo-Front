@@ -1,16 +1,41 @@
 import { Field, Form, Formik } from "formik";
 import GlobalModal from "../widgets/GlobalModal";
+import axios from "axios";
 import React from "react";
 import ErrorModal from "../Login/ErrorModal";
+import { useParams } from "react-router-dom";
 
 const AgregarProductos = () => {
   const [id, setId] = React.useState("");
   const token = sessionStorage.getItem("token");
   const [showModal, setShowModal] = React.useState(false);
   const [errorRes, setErrorRes] = React.useState([]);
+  const [productoOld, setProductoOld] = React.useState([]);
   const [message, setMessage] = React.useState("Producto agregado con exito");
+  const [messageUpdate, setMessageUpdate] = React.useState(
+    "Producto actualizado con exito"
+  );
   const [showGlobalModal, setGlobalShowModal] = React.useState(false);
   const datos = sessionStorage.getItem("datosUsuario");
+
+  const { idProducto } = useParams();
+  const obtenerProductosPorId = async () => {
+    await axios
+      .get(`http://localhost:8080/api/productos/${idProducto}`, {
+        headers,
+      })
+      .then(async (response) => {
+        console.log(response);
+        await setProductoOld(response.data);
+      });
+  };
+  const headers = {
+    "x-token": token,
+  };
+
+  React.useEffect(() => {
+    obtenerProductosPorId();
+  }, []);
 
   React.useEffect(() => {
     const datosGuardados = JSON.parse(datos);
@@ -19,40 +44,84 @@ const AgregarProductos = () => {
   return (
     <>
       <Formik
-        initialValues={{ nombre: "", descripcion: "", usuario: id }}
+        enableReinitialize
+        initialValues={
+          idProducto
+            ? {
+                nombre: productoOld.nombre,
+                descripcion: productoOld.descripcion,
+                usuario: productoOld.usuario,
+              }
+            : { nombre: "", descripcion: "", usuario: id }
+        }
         onSubmit={(values) => {
-          fetch(`http://localhost:8080/api/productos`, {
-            method: "POST",
-            body: JSON.stringify(values),
-            headers: {
-              "x-token": token,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                const guardarMsg = async () => {
-                  setGlobalShowModal(true);
-                  setShowModal(false);
-                };
-                guardarMsg();
-              }
-
-              if (data.errors) {
-                const guardarMsgError = async () => {
-                  await setErrorRes(data.errors[0].msg);
-                  setGlobalShowModal(false);
-                  setShowModal(true);
-                };
-
-                guardarMsgError();
-              }
+          if (idProducto) {
+            fetch(`http://localhost:8080/api/productos/${idProducto}`, {
+              method: "PUT",
+              body: JSON.stringify(values),
+              headers: {
+                "x-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
             })
-            .catch((err) => {
-              console.log(err);
-            });
+              .then((res) => res.json())
+              .then((data) => {
+                if (data) {
+                  const guardarMsg = async () => {
+                    setGlobalShowModal(true);
+                    setShowModal(false);
+                  };
+                  guardarMsg();
+                }
+
+                if (data.errors) {
+                  const guardarMsgError = async () => {
+                    await setErrorRes(data.errors[0].msg);
+                    setGlobalShowModal(false);
+                    setShowModal(true);
+                  };
+
+                  guardarMsgError();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            fetch(`http://localhost:8080/api/productos`, {
+              method: "POST",
+              body: JSON.stringify(values),
+              headers: {
+                "x-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data) {
+                  const guardarMsg = async () => {
+                    setGlobalShowModal(true);
+                    setShowModal(false);
+                  };
+                  guardarMsg();
+                }
+
+                if (data.errors) {
+                  const guardarMsgError = async () => {
+                    await setErrorRes(data.errors[0].msg);
+                    setGlobalShowModal(false);
+                    setShowModal(true);
+                  };
+
+                  guardarMsgError();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -86,7 +155,7 @@ const AgregarProductos = () => {
                 type="submit"
                 class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"
               >
-                Agregar Producto
+                {idProducto ? "Actualizar Producto" : "Agregar Producto"}
               </button>
             </Form>
           </div>
@@ -98,7 +167,7 @@ const AgregarProductos = () => {
       {showGlobalModal ? (
         <GlobalModal
           setShowGlobalModal={setGlobalShowModal}
-          modalMessage={message}
+          modalMessage={!idProducto ? message : messageUpdate}
           redirectTo="/productos"
         />
       ) : null}

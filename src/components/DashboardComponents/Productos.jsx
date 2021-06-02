@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -7,6 +7,8 @@ const Productos = () => {
   const [total, setTotal] = useState();
   const [limite, setLimite] = useState(5);
   const [desde, setDesde] = useState(0);
+
+  const history = useHistory();
 
   const token = sessionStorage.getItem("token");
 
@@ -119,7 +121,9 @@ const Productos = () => {
 
                     <td class="">
                       <button
-                        onClick={() => console.log(producto._id)}
+                        onClick={() =>
+                          history.push(`updateproductos/${producto._id}`)
+                        }
                         class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-400 uppercase transition bg-transparent border-2 border-blue-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
                       >
                         Editar
