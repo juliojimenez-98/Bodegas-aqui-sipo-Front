@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -8,6 +8,7 @@ const Bodegas = () => {
   const [limite, setLimite] = useState(6);
   const [desde, setDesde] = useState(0);
   const [usuario, setUsuario] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     const obtenerSessionStorage = async () => {
@@ -130,9 +131,13 @@ const Bodegas = () => {
                 </div>
               </div>
               <div class="px-6 py-4 flex justify-end">
-                <button class="bg-blue-500 rounded-full text-white hover:bg-gray-300 hover:text-gray-800 font-bold px-4  mr-2">
+                <button
+                  onClick={() => history.push(`updatebodegas/${bodega._id}`)}
+                  class="bg-blue-500 rounded-full text-white hover:bg-gray-300 hover:text-gray-800 font-bold px-4  mr-2"
+                >
                   Editar
                 </button>
+
                 <button
                   class={
                     (bodega.estado

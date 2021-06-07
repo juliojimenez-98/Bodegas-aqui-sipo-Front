@@ -24,7 +24,7 @@
 
 .swiper {
   scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 .swiper > img {

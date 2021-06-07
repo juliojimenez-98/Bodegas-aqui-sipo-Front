@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
-import ActualizarProductos from "../../DashboardComponents/ActualizarProducto";
 import AgregarBodegas from "../../DashboardComponents/AgregarBodegas";
 import AgregarProductos from "../../DashboardComponents/AgregarProductos";
 import Bodegas from "../../DashboardComponents/Bodegas";
@@ -231,6 +230,11 @@ const Sidebar = () => {
                             component={RegistroUsuarios}
                           />
                           <Route path="/bodegas" component={Bodegas} />
+                          <Route
+                            path="/updatebodegas/:idBodega"
+                            exact
+                            component={AgregarBodegas}
+                          />
                           <Route path="/addbodega" component={AgregarBodegas} />
                           <Route
                             path="/addproducto"

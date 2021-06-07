@@ -3,6 +3,7 @@ import { Field, Form, Formik } from "formik";
 import React from "react";
 import GlobalModal from "../widgets/GlobalModal";
 import ErrorModal from "../Login/ErrorModal";
+import { useParams } from "react-router-dom";
 
 const AgregarBodegas = () => {
   const [errorRes, setErrorRes] = React.useState([]);
@@ -11,10 +12,33 @@ const AgregarBodegas = () => {
   const [message, setMessage] = React.useState("Bodega agregada con exito");
   const [showGlobalModal, setGlobalShowModal] = React.useState(false);
   const [formProductos, setFormProductos] = React.useState(false);
-  const [buttonTrue, setButtonTrue] = React.useState(false);
+
   const [productos, setProductos] = React.useState([]);
+  const [oldBodega, setOldBodega] = React.useState([]);
+  const [oldProductos, setOldProductos] = React.useState();
   const token = sessionStorage.getItem("token");
   const datos = sessionStorage.getItem("datosUsuario");
+
+  const { idBodega } = useParams();
+
+  const obtenerBodegas = async () => {
+    await axios
+      .get(`http://localhost:8080/api/bodegas/${idBodega}`, {
+        headers,
+      })
+      .then((response) => {
+        // setOldBodega(response.data);
+        setOldBodega(response.data.bodegas);
+        setOldProductos(response.data.bodegas.producto);
+        setTimeout(() => {
+          console.log(oldBodega);
+        }, 5000);
+      });
+  };
+
+  React.useEffect(() => {
+    obtenerBodegas();
+  }, []);
 
   const obtenerProductos = async () => {
     await axios
@@ -23,7 +47,6 @@ const AgregarBodegas = () => {
       })
       .then(async (response) => {
         setProductos(response.data.productos);
-        console.log(productos);
       });
   };
   const headers = {
@@ -46,11 +69,20 @@ const AgregarBodegas = () => {
   return (
     <>
       <Formik
-        initialValues={{
-          nombre: "",
-          descripcion: "",
-          producto: [],
-        }}
+        enableReinitialize
+        initialValues={
+          idBodega
+            ? {
+                nombre: oldBodega.nombre,
+                descripcion: oldBodega.descripcion,
+                producto: oldProductos,
+              }
+            : {
+                nombre: "",
+                descripcion: "",
+                producto: [],
+              }
+        }
         onSubmit={(values) => {
           fetch(`http://localhost:8080/api/bodegas`, {
             method: "POST",
@@ -131,8 +163,13 @@ const AgregarBodegas = () => {
                 {!formProductos ? "Agregar productos" : "X"}
               </button>
 
-              <div class={(!formProductos ? "hidden " : " ") + " px-3 mt-2"}>
-                <div class="bg-white w-full md:max-w-4xl rounded-lg shadow">
+              <div
+                class={
+                  (!formProductos ? "hidden " : " ") +
+                  " mt-2 rounded border border-green-500"
+                }
+              >
+                <div class="bg-white w-full  rounded-lg shadow">
                   <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
                     <div>
                       <div class="text-xl font-bold text-gray-700">
@@ -143,110 +180,24 @@ const AgregarBodegas = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="px-6">
-                    {productos.map(function (p) {
-                      return (
-                        <div class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
-                          <div class="flex items-center">
-                            <div class="ml-2">
-                              <div class="text-sm font-semibold text-gray-600">
-                                {p.nombre}
-                              </div>
-                              <div class="text-sm font-light text-gray-500">
-                                {p.descripcion}
-                              </div>
-                            </div>
-                          </div>
-                          {values.producto.find((e) => e === p._id) ===
-                          p._id ? (
-                            <div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  console.log("Ya esta producto");
-                                }}
-                                class="bg-red-600 hover:bg-red-500 p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
-                              >
-                                <svg
-                                  class="text-white toggle__lock w-6 h-6"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                  />
-                                </svg>
-                              </button>
-                            </div>
-                          ) : (
-                            <div>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const found = values.producto.find(
-                                    (element) => element === p._id
-                                  );
-                                  if (found) {
-                                    console.log("Ya esta agregado");
-                                  } else {
-                                    values.producto.push(p._id);
-                                    setFormProductos(false);
-                                    setTimeout(() => {
-                                      setFormProductos(true);
-                                    }, 10);
-                                  }
 
-                                  console.log(values.producto);
-                                }}
-                                class="bg-green-600 hover:bg-green-500 p-2 rounded-full shadow-md flex justify-center items-center focus:outline-none"
-                              >
-                                <svg
-                                  class="text-white toggle__lock w-6 h-6"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                  />
-                                </svg>
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                    <div class="flex bg-gray-200 justify-center items-center h-16 p-4 my-6  rounded-lg  shadow-inner">
-                      <div class="flex items-center border border-gray-400 p-2 border-dashed rounded cursor-pointer">
-                        <div>
-                          <svg
-                            class="text-gray-500 w-6 h-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                            />
-                          </svg>
-                        </div>
-                        <div class="ml-1 text-gray-500 font-medium">
-                          {" "}
-                          Invite a friend
-                        </div>
+                  <div class="flex flex-col items-center ">
+                    <div class="flex flex-col ">
+                      <div className="p-4 grid grid-cols-1 lg:grid-cols-2">
+                        {productos.map(function (p) {
+                          return (
+                            <label className="lg:mr-4">
+                              <Field
+                                color="green"
+                                type="checkbox"
+                                class="form-checkbox h-5 w-5 text-green-600"
+                                name="producto"
+                                value={p._id}
+                              />
+                              {p.nombre}
+                            </label>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -255,6 +206,9 @@ const AgregarBodegas = () => {
               </div>
               <div className="flex">
                 <div className="mx-auto">
+                  <button type="button" onClick={console.log(values.producto)}>
+                    clickme
+                  </button>
                   <button
                     type="submit"
                     class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"
