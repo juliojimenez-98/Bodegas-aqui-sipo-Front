@@ -40,6 +40,19 @@ const Bodegas = () => {
     "x-token": token,
   };
 
+  const BloquearBodegas = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/bodegas/${id}`, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          obtenerBodegas(limite, desde);
+        }
+      });
+  };
+
   useEffect(() => {
     obtenerBodegas(limite, desde);
   }, [limite, desde]);
@@ -139,6 +152,11 @@ const Bodegas = () => {
                 </button>
 
                 <button
+                  onClick={() => {
+                    if (bodega.estado) {
+                      BloquearBodegas(bodega._id);
+                    } else console.log("Bodega bloqueada");
+                  }}
                   class={
                     (bodega.estado
                       ? " bg-red-700 text-white "

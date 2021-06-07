@@ -93,7 +93,6 @@ const Usuarios = () => {
                   </th>
                   <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                   <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
-                  <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                 </tr>
               </thead>
 
@@ -144,16 +143,20 @@ const Usuarios = () => {
                     <td class="">
                       <button
                         onClick={() => {
-                          BloquearUsuarios(user.uid);
+                          if (user.estado) {
+                            // BloquearUsuarios(user.uid);
+                            BloquearUsuarios(user.uid);
+                          } else {
+                            console.log("usuario bloqueado");
+                          }
                         }}
-                        class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                        class={
+                          user.estado
+                            ? "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                            : "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                        }
                       >
-                        Bloquear
-                      </button>
-                    </td>
-                    <td class="">
-                      <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
-                        Desbloquear
+                        {user.estado ? "Bloquear" : "Desbloquear"}
                       </button>
                     </td>
                   </tr>
