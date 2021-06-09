@@ -126,32 +126,34 @@ const Bodegas = () => {
       >
         {({ isSubmitting }) => (
           <Form className="mx-auto">
-            <div>
-              <Field
-                class="p-2 pl-4  rounded-full border border-blue-500  focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                type="text"
-                placeholder="Escribe para buscar"
-                name="terminos"
-              />
-              <button
-                type="submit"
-                class="ml-2 inline-block p-2 text-center  text-white transition bg-blue-500 rounded-full shadow ripple hover:shadow-lg hover:text-gray-800 hover:bg-blue-200 focus:outline-none"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="  h-6 w-6 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+            <div className="flex">
+              <div className="mx-auto">
+                <Field
+                  class="p-2 pl-4 lg:w-64 rounded-full border border-blue-500  focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  type="text"
+                  placeholder="Escribe para buscar"
+                  name="terminos"
+                />
+                <button
+                  type="submit"
+                  class="ml-2 inline-block p-2 text-center  text-white transition bg-blue-500 rounded-full shadow ripple hover:shadow-lg hover:text-gray-800 hover:bg-blue-200 focus:outline-none"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="  h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </Form>
         )}

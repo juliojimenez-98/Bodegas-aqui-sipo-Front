@@ -206,9 +206,6 @@ const AgregarBodegas = () => {
               </div>
               <div className="flex">
                 <div className="mx-auto">
-                  <button type="button" onClick={console.log(values.producto)}>
-                    clickme
-                  </button>
                   <button
                     type="submit"
                     class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"

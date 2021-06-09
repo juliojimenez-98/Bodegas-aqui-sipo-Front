@@ -188,29 +188,23 @@ const Sidebar = () => {
                     <div
                       class={
                         (!dropdown ? "hidden" : " ") +
-                        " absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
+                        " absolute right-0 mt-2 w-48 border border-blue-500 bg-white rounded-md overflow-hidden shadow-xl z-10"
                       }
                     >
                       <a
                         href="#a"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-white"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
                       >
-                        Profile
-                      </a>
-                      <a
-                        href="#a"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-black"
-                      >
-                        Tickets
+                        Perfil
                       </a>
                       <a
                         onClick={() => {
                           sessionStorage.clear();
                         }}
                         href="/login"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-600 hover:text-white"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-500 hover:text-white"
                       >
-                        Logout
+                        Cerrar Sesion
                       </a>
                     </div>
                   </div>
