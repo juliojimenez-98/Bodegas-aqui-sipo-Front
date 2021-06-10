@@ -43,6 +43,19 @@ const Usuarios = () => {
     "x-token": token,
   };
 
+  const DesbloquearUsuarios = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/usuarios/${id}/unlock`, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          obtenerUsuarios(limite, desde);
+        }
+      });
+  };
+
   const BloquearUsuarios = async (id) => {
     await axios
       .delete(`http://localhost:8080/api/usuarios/${id}`, {
@@ -218,7 +231,7 @@ const Usuarios = () => {
                                 // BloquearUsuarios(user.uid);
                                 BloquearUsuarios(user.uid);
                               } else {
-                                console.log("usuario bloqueado");
+                                DesbloquearUsuarios(user.uid);
                               }
                             }}
                             class={
@@ -283,7 +296,7 @@ const Usuarios = () => {
                                 // BloquearUsuarios(user.uid);
                                 BloquearUsuarios(user.uid);
                               } else {
-                                console.log("usuario bloqueado");
+                                DesbloquearUsuarios(user.uid);
                               }
                             }}
                             class={
