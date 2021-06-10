@@ -123,7 +123,7 @@ const RegistroUsuarios = () => {
           }
         }}
       >
-        {({ isSubmitting }) => (
+        {({ values, handleChange }) => (
           <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <Form>
               <div class="-mx-3 md:flex mb-6">
@@ -156,11 +156,15 @@ const RegistroUsuarios = () => {
                     Rol
                   </label>
 
-                  <Field
-                    type="text"
+                  <select
                     name="role"
-                    class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-                  />
+                    onChange={handleChange}
+                    value={values.role}
+                    style={{ display: "block" }}
+                  >
+                    <option value="ADMIN_ROLE" label="ADMINISTRADOR" />
+                    <option value="USER_ROLE" label="BODEGUERO" />
+                  </select>
                 </div>
               </div>
               <button
