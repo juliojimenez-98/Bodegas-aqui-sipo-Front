@@ -70,7 +70,7 @@ const Movimientos = () => {
                           </p>
                         </div>
                         <div class="leading-5 text-gray-800">
-                          Productos de la bodega : {p.bodega.nombre}
+                          Productos de la bodega :
                         </div>
                         <div class="leading-5 text-blue-500">
                           {p.bodega.nombre}

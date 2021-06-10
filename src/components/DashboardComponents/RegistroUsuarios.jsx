@@ -4,6 +4,7 @@ import ErrorModal from "../Login/ErrorModal";
 import GlobalModal from "../widgets/GlobalModal";
 import { useParams } from "react-router";
 import axios from "axios";
+import * as Yup from "yup";
 
 const RegistroUsuarios = () => {
   const [errorRes, setErrorRes] = React.useState([]);
@@ -32,6 +33,17 @@ const RegistroUsuarios = () => {
     "x-token": token,
   };
 
+  const SignupSchema = Yup.object().shape({
+    role: Yup.string().required("El Rol es requerido"),
+    nombre: Yup.string()
+      .min(2, "Nombre muy corto")
+      .max(50, "Nombre muy largo")
+      .required("El nombre es requerido"),
+    correo: Yup.string()
+      .email("Correo invalido")
+      .required("El Email es requerido"),
+  });
+
   React.useEffect(() => {
     obtenerUsuariosPorId();
   }, []);
@@ -41,6 +53,7 @@ const RegistroUsuarios = () => {
       <button onClick={() => obtenerUsuariosPorId()}>clickme</button>
       <Formik
         enableReinitialize
+        validationSchema={SignupSchema}
         initialValues={
           idUser
             ? {
@@ -97,6 +110,7 @@ const RegistroUsuarios = () => {
               .then((res) => res.json())
               .then(async (data) => {
                 if (data) {
+                  console.log(values);
                   console.log(data.msg);
 
                   const guardarMsg = async () => {
@@ -123,7 +137,7 @@ const RegistroUsuarios = () => {
           }
         }}
       >
-        {({ values, handleChange }) => (
+        {({ values, handleChange, handleBlur, errors, touched }) => (
           <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
             <Form>
               <div class="-mx-3 md:flex mb-6">
@@ -137,6 +151,9 @@ const RegistroUsuarios = () => {
                     name="nombre"
                     placeholder="Ingrese nombre"
                   />
+                  {errors.nombre && touched.nombre ? (
+                    <div className="text-red-600">{errors.nombre}</div>
+                  ) : null}
                 </div>
                 <div class="md:w-1/2 px-3">
                   <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
@@ -148,6 +165,9 @@ const RegistroUsuarios = () => {
                     class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                     placeholder="Correo@correo.com"
                   />
+                  {errors.correo && touched.correo ? (
+                    <div className="text-red-600">{errors.correo}</div>
+                  ) : null}
                 </div>
               </div>
               <div class="-mx-3 md:flex mb-2">
@@ -169,15 +189,20 @@ const RegistroUsuarios = () => {
                     </svg>
                     <select
                       name="role"
+                      onBlur={handleBlur}
                       className="w-64 mb-10 border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
                       onChange={handleChange}
                       value={values.role}
                       style={{ display: "block" }}
                     >
+                      <option value="" label="Selecciona el Rol" />
                       <option value="ADMIN_ROLE" label="ADMINISTRADOR" />
                       <option value="USER_ROLE" label="BODEGUERO" />
                     </select>
                   </div>
+                  {errors.role && touched.role ? (
+                    <div className="text-red-600">{errors.role}</div>
+                  ) : null}
                 </div>
               </div>
               <div className="flex">

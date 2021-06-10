@@ -230,8 +230,10 @@ const Usuarios = () => {
                               if (user.estado) {
                                 // BloquearUsuarios(user.uid);
                                 BloquearUsuarios(user.uid);
+                                setUsuariosSearch(false);
                               } else {
                                 DesbloquearUsuarios(user.uid);
+                                setUsuariosSearch(false);
                               }
                             }}
                             class={
@@ -295,8 +297,10 @@ const Usuarios = () => {
                               if (user.estado) {
                                 // BloquearUsuarios(user.uid);
                                 BloquearUsuarios(user.uid);
+                                obtenerUsuarios();
                               } else {
                                 DesbloquearUsuarios(user.uid);
+                                obtenerUsuarios();
                               }
                             }}
                             class={

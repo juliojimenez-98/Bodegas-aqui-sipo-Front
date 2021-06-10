@@ -44,13 +44,32 @@ const Productos = () => {
     "x-token": token,
   };
 
-  const nextPage = () => {
-    setDesde(desde + limite);
+  const DesbloquearProductos = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/productos/${id}/unlock`, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          obtenerProductos(limite, desde);
+        }
+      });
   };
 
-  const previousPage = () => {
-    setDesde(desde - limite);
+  const BloquearProductos = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/productos/${id}`, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          obtenerProductos(limite, desde);
+        }
+      });
   };
+
   useEffect(() => {
     obtenerProductos(limite, desde);
   }, [limite, desde]);
@@ -150,7 +169,6 @@ const Productos = () => {
                   </th>
                   <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                   <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
-                  <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                 </tr>
               </thead>
 
@@ -198,13 +216,24 @@ const Productos = () => {
                           </button>
                         </td>
                         <td class="">
-                          <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
-                            Bloquear
-                          </button>
-                        </td>
-                        <td class="">
-                          <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
-                            Desbloquear
+                          <button
+                            onClick={() => {
+                              if (producto.estado) {
+                                // BloquearUsuarios(user.uid);
+                                BloquearProductos(producto._id);
+                                setProductosSearch(false);
+                              } else {
+                                DesbloquearProductos(producto._id);
+                                setProductosSearch(false);
+                              }
+                            }}
+                            class={
+                              producto.estado
+                                ? "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                                : "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                            }
+                          >
+                            {producto.estado ? "Bloquear" : "Desbloquear"}
                           </button>
                         </td>
                       </tr>
@@ -251,13 +280,22 @@ const Productos = () => {
                           </button>
                         </td>
                         <td class="">
-                          <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
-                            Bloquear
-                          </button>
-                        </td>
-                        <td class="">
-                          <button class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none">
-                            Desbloquear
+                          <button
+                            onClick={() => {
+                              if (producto.estado) {
+                                // BloquearUsuarios(user.uid);
+                                BloquearProductos(producto._id);
+                              } else {
+                                DesbloquearProductos(producto._id);
+                              }
+                            }}
+                            class={
+                              producto.estado
+                                ? "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-red-400 uppercase transition bg-transparent border-2 border-red-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                                : "inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-yellow-400 uppercase transition bg-transparent border-2 border-yellow-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
+                            }
+                          >
+                            {producto.estado ? "Bloquear" : "Desbloquear"}
                           </button>
                         </td>
                       </tr>
