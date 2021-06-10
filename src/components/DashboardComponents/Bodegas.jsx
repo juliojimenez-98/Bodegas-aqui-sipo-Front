@@ -25,6 +25,9 @@ const Bodegas = () => {
 
   const token = sessionStorage.getItem("token");
   const msgNoProducts = "No tiene productos";
+  const headers = {
+    "x-token": token,
+  };
 
   const buscarBodegas = async (terminos) => {
     await axios
@@ -34,6 +37,18 @@ const Bodegas = () => {
       .then(async (response) => {
         console.log(response.data.results);
         setBodegasBuscadas(response.data.results);
+      });
+  };
+
+  const desbloquearBodega = async (id) => {
+    await axios
+      .delete(`http://localhost:8080/api/bodegas/${id}/unlock`, {
+        headers,
+      })
+      .then(async (response) => {
+        if (response.data) {
+          obtenerBodegas(limite, desde);
+        }
       });
   };
 
@@ -50,9 +65,6 @@ const Bodegas = () => {
         setBodegas(response.data.bodegas);
         console.log(bodegas);
       });
-  };
-  const headers = {
-    "x-token": token,
   };
 
   const BloquearBodegas = async (id) => {
@@ -236,7 +248,10 @@ const Bodegas = () => {
                     onClick={() => {
                       if (bodega.estado) {
                         BloquearBodegas(bodega._id);
-                      } else console.log("Bodega bloqueada");
+                      } else {
+                        console.log(bodega.estado);
+                        desbloquearBodega(bodega._id);
+                      }
                     }}
                     class={
                       (bodega.estado
@@ -333,7 +348,10 @@ const Bodegas = () => {
                       onClick={() => {
                         if (bodega.estado) {
                           BloquearBodegas(bodega._id);
-                        } else console.log("Bodega bloqueada");
+                        } else {
+                          console.log(bodega.estado);
+                          desbloquearBodega(bodega._id);
+                        }
                       }}
                       class={
                         (bodega.estado
