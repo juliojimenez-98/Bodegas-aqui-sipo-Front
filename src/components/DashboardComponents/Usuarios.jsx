@@ -72,7 +72,7 @@ const Usuarios = () => {
       <div class="mt-8"></div>
 
       <button
-        onClick={() => history.push("/addbodega")}
+        onClick={() => history.push("/addusuario")}
         class="flex bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 ease-in-out uppercase hover:text-gray-800 hover:bg-blue-200 mr-6 focus:outline-none"
       >
         Agregar un usuario
@@ -204,6 +204,7 @@ const Usuarios = () => {
                           <button
                             onClick={() => {
                               console.log(user.uid);
+                              history.push(`/actualizarusuarios/${user.uid}`);
                             }}
                             class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-400 uppercase transition bg-transparent border-2 border-blue-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
                           >
@@ -268,6 +269,7 @@ const Usuarios = () => {
                           <button
                             onClick={() => {
                               console.log(user.uid);
+                              history.push(`/actualizarusuarios/${user.uid}`);
                             }}
                             class="inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-400 uppercase transition bg-transparent border-2 border-blue-400 rounded-full ripple hover:bg-blue-100 focus:outline-none"
                           >

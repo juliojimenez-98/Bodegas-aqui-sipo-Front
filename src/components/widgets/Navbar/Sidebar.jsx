@@ -241,6 +241,11 @@ const Sidebar = () => {
                           />
                           <Route path="/productos" component={Productos} />
                           <Route path="/movimientos" component={Movimientos} />
+                          <Route
+                            path="/actualizarusuarios/:idUser"
+                            exact
+                            component={RegistroUsuarios}
+                          />
                         </>
                       ) : null}
                       <Route path="/bodegas" component={Bodegas} />
@@ -251,6 +256,7 @@ const Sidebar = () => {
                         exact
                         component={AgregarProductos}
                       />
+
                       <Route path="/productos" component={Productos} />
                     </Switch>
                   ) : (
