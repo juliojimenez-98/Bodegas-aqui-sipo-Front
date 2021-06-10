@@ -30,9 +30,6 @@ const AgregarBodegas = () => {
         // setOldBodega(response.data);
         setOldBodega(response.data.bodegas);
         setOldProductos(response.data.bodegas.producto);
-        setTimeout(() => {
-          console.log(oldBodega);
-        }, 5000);
       });
   };
 
@@ -75,7 +72,7 @@ const AgregarBodegas = () => {
             ? {
                 nombre: oldBodega.nombre,
                 descripcion: oldBodega.descripcion,
-                producto: oldProductos,
+                producto: [],
               }
             : {
                 nombre: "",
@@ -84,40 +81,78 @@ const AgregarBodegas = () => {
               }
         }
         onSubmit={(values) => {
-          fetch(`http://localhost:8080/api/bodegas`, {
-            method: "POST",
-            body: JSON.stringify(values),
-            headers: {
-              "x-token": token,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(values.producto);
-              if (data) {
-                const guardarMsg = async () => {
-                  setGlobalShowModal(true);
-                  setShowModal(false);
-                  console.log(data);
-                };
-                guardarMsg();
-              }
-
-              if (data.errors) {
-                const guardarMsgError = async () => {
-                  await setErrorRes(data.errors[0].msg);
-                  setGlobalShowModal(false);
-                  setShowModal(true);
-                };
-
-                guardarMsgError();
-              }
+          if (idBodega) {
+            console.log(values);
+            fetch(`http://localhost:8080/api/bodegas/${idBodega}`, {
+              method: "PUT",
+              body: JSON.stringify(values),
+              headers: {
+                "x-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
             })
-            .catch((err) => {
-              console.log(err);
-            });
+              .then((res) => res.json())
+              .then((data) => {
+                if (data) {
+                  console.log(data);
+                  const guardarMsg = async () => {
+                    setGlobalShowModal(true);
+                    setShowModal(false);
+                  };
+                  guardarMsg();
+                }
+
+                if (data.errors) {
+                  const guardarMsgError = async () => {
+                    console.log(data.errors);
+                    await setErrorRes(data.errors[0].msg);
+                    setGlobalShowModal(false);
+                    setShowModal(true);
+                  };
+
+                  guardarMsgError();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            fetch(`http://localhost:8080/api/bodegas`, {
+              method: "POST",
+              body: JSON.stringify(values),
+              headers: {
+                "x-token": token,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                console.log(values.producto);
+                if (data) {
+                  const guardarMsg = async () => {
+                    setGlobalShowModal(true);
+                    setShowModal(false);
+                    console.log(data);
+                  };
+                  guardarMsg();
+                }
+
+                if (data.errors) {
+                  const guardarMsgError = async () => {
+                    await setErrorRes(data.errors[0].msg);
+                    setGlobalShowModal(false);
+                    setShowModal(true);
+                  };
+
+                  guardarMsgError();
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
         }}
       >
         {({ isSubmitting, values }) => (
@@ -210,7 +245,7 @@ const AgregarBodegas = () => {
                     type="submit"
                     class=" lg:w-64 mx-auto bg-blue-500 rounded-full font-bold text-white px-4 py-3 transition duration-300 uppercase hover:text-gray-800 hover:bg-blue-200 mt-6 focus:outline-none"
                   >
-                    Agregar Bodega
+                    {idBodega ? "Actualizar bodega" : "Agregar bodega"}
                   </button>
                 </div>
               </div>
